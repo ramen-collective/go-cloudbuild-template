@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"log"
 	"time"
 
 	"github.com/google/uuid"
@@ -110,17 +109,12 @@ func (r *UserRepository) GetByName(name string) (User, error) {
 
 // GetByUUIDs retrieve multiple Users by given uuids from the database
 func (r *UserRepository) GetByUUIDs(uuids []string) ([]User, error) {
-	log.Println("iciiii")
 	query, args, err := sqlx.In(_selectUsersByUUIDsQuery, uuids)
 	if err != nil {
-		log.Println("err = ", err)
 		return nil, err
 	}
 	var users []User
-	log.Println("before")
 	err = r.DB.Select(&users, query, args...)
-	log.Println("out")
-	log.Println("err2 = ", err)
 
 	return users, err
 }
