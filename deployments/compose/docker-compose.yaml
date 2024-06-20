@@ -1,0 +1,45 @@
+version: "3"
+networks:
+  api-template:
+services:
+  mysql:
+    image: "mysql:8"
+    environment:
+      - "MYSQL_DATABASE=api_template"
+      - "MYSQL_ROOT_PASSWORD=root"
+      - "MYSQL_PASSWORD=template"
+      - "MYSQL_USER=template"
+    command: --ngram-token-size=2 --innodb_ft_enable_stopword="OFF"
+    networks:
+      - "api-template"
+    volumes:
+      - "../../scripts/sql/operations/local_migration.sql:/docker-entrypoint-initdb.d/0_init.sql"
+      - "../../scripts/sql/operations/load_dev_mock.sql:/docker-entrypoint-initdb.d/1_init.sql"
+    ports:
+      - "3307:3306"
+  api-template:
+    build:
+      context: ../..
+      dockerfile: scripts/build/api-template.dockerfile
+    depends_on:
+      - "mysql"
+      - "redis"
+    environment:
+      - "CACHE_ADDRESS=redis"
+      - "CACHE_PORT=6379"
+      - "CACHE_PASSWORD="
+      - "CACHE_DB=0"
+      - "CACHE_PREFIX=local"
+      - "DATABASE_ADDRESS=mysql"
+      - "DATABASE_NAME=api_template"
+      - "DATABASE_PASSWORD=template"
+      - "DATABASE_USERNAME=template"
+    networks:
+      - "api-template"
+    ports:
+      - "80:80"
+  redis:
+    image: redis:6-alpine
+    networks:
+      - "api-template"
+  

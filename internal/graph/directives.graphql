@@ -1,0 +1,3 @@
+directive @isAuthenticated on FIELD_DEFINITION
+directive @locale(lang: Languages!) on FIELD
+directive @rateLimitByUser(limit: Int! = 10, duration: Int! = 60) on FIELD_DEFINITION

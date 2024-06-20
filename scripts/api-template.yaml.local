@@ -1,0 +1,9 @@
+database:
+  address: localhost
+  name: api_template
+  password: template
+  username: template
+  port: 3306
+server:
+  host: localhost
+  port: 8080

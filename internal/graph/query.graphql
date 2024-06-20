@@ -1,0 +1,4 @@
+type Query {
+  me:                                             PrivateUser! @isAuthenticated
+  users(uuids: [UUID!]!):                         [User]
+}
