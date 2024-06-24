@@ -49,3 +49,4 @@ The API will be running locally on the port :80
 - Add basic feature like notes/auth
 - Unit test
 - Add CI
+- POC Prisma
